@@ -33,5 +33,15 @@ class channelDBundle extends Bundle {
     val d_data = UInt((8*w).W)
 }
 
+class Top extends Module {
 
+    val io = IO(new Bundle{
+        val opCode = Input(UInt(3.W))
+        val channelA = Flipped(Decoupled(new channelABundle))
+        val channelD = Decoupled(new channelDBundle)
+        
+
+    })
+
+}
 
