@@ -11,7 +11,7 @@ trait Config {
     val i = 32
 }
 
-trait opCodes {
+trait OpCodes {
     val Get = 4
     val AccessAckData = 1
     val PutFullData = 0
@@ -30,7 +30,7 @@ class channelABundle extends Bundle with Config {
     val a_data = UInt((8*w).W)
 }
 
-class channelDBundle extends Bundle {
+class channelDBundle extends Bundle with Config {
     val d_opcode = UInt(3.W)
     val d_param = UInt(2.W)
     val d_size = UInt(z.W)
@@ -41,15 +41,43 @@ class channelDBundle extends Bundle {
     val d_data = UInt((8*w).W)
 }
 
-class Top extends Module {
+class Top extends Module with OpCodes {
 
     val io = IO(new Bundle{
-        val opCode = Input(UInt(3.W))
+        // val opCode = Input(UInt(3.W))
         val channelA = Flipped(Decoupled(new channelABundle))
         val channelD = Decoupled(new channelDBundle)
-        
-
     })
+
+    val memory = SyncReadMem(1024,UInt(32.W))
+    val r = Reg(UInt(32.W))
+
+    memory.write(2.U, 4.U)
+
+    io.channelA.ready := 1.B
+
+    when(io.channelA.bits.a_opcode === Get.U){
+        io.channelD.bits.d_opcode := io.channelA.bits.a_opcode
+        io.channelD.bits.d_param := io.channelA.bits.a_param
+        io.channelD.bits.d_size := io.channelA.bits.a_size
+        io.channelD.bits.d_source := io.channelA.bits.a_source
+        io.channelD.bits.d_sink := 0.U
+        io.channelD.bits.d_denied := 0.U
+        io.channelD.bits.d_corrupt := io.channelA.bits.a_corrupt
+        io.channelD.bits.d_data := memory.read(io.channelA.bits.a_address)
+        io.channelD.valid := io.channelA.valid
+    }.otherwise{
+        io.channelD.bits.d_opcode := io.channelA.bits.a_opcode
+        io.channelD.bits.d_param := io.channelA.bits.a_param
+        io.channelD.bits.d_size := io.channelA.bits.a_size
+        io.channelD.bits.d_source := io.channelA.bits.a_source
+        io.channelD.bits.d_sink := 0.U
+        io.channelD.bits.d_denied := 0.U
+        io.channelD.bits.d_corrupt := 1.B
+        io.channelD.bits.d_data := io.channelA.bits.a_data
+        io.channelD.valid := 1.B
+    }
+    
 
 }
 
