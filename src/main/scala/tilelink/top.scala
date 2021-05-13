@@ -11,6 +11,14 @@ trait Config {
     val i = 32
 }
 
+trait opCodes {
+    val Get = 4
+    val AccessAckData = 1
+    val PutFullData = 0
+    val PutPartialData = 1
+    val AccessAck = 0
+}
+
 class channelABundle extends Bundle with Config {
     val a_opcode = UInt(3.W)
     val a_param = UInt(3.W)
