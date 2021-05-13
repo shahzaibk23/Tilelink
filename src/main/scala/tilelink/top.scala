@@ -54,6 +54,7 @@ class Top extends Module with OpCodes {
 
     memory.write(2.U, 4.U)
 
+
     io.channelA.ready := 1.B
 
     when(io.channelA.bits.a_opcode === Get.U){

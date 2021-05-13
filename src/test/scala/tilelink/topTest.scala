@@ -7,6 +7,7 @@ import chiseltest._
 import chiseltest.experimental.TestOptionBuilder._ 
 import chiseltest.internal.VerilatorBackendAnnotation
 
+
 class topTest extends FreeSpec with ChiselScalatestTester {
     "TOP Test" in {
         test(new Top).withAnnotations(Seq(VerilatorBackendAnnotation)){ c =>
