@@ -20,8 +20,6 @@ class Top extends Module with OpCodes with Config {
     val mem = Mem(1024, UInt(32.W))
     // mem.write(2.U, 4.U)
 
-    def checkOpcode(value:Int):Bool = if (io.channelA.bits.a_opcode == value.U) true.B else false.B
-
 
     when(io.channelA.bits.a_opcode === Get.U || io.channelA.bits.a_opcode === PutFullData.U || io.channelA.bits.a_opcode === PutPartialData.U){
         
@@ -42,7 +40,7 @@ class Top extends Module with OpCodes with Config {
         stall.io.bundle_in.d_denied := 0.U
         stall.io.bundle_in.d_corrupt := io.channelA.bits.a_corrupt
         stall.io.valid_in := 1.U
-        
+
     }.otherwise{
         stall.io.bundle_in.d_opcode := 0.U
         stall.io.bundle_in.d_param := 0.U

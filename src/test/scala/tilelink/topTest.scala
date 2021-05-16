@@ -11,7 +11,7 @@ import chiseltest.internal.VerilatorBackendAnnotation
 class topTest extends FreeSpec with ChiselScalatestTester {
     "TOP Test" in {
         test(new Top).withAnnotations(Seq(VerilatorBackendAnnotation)){ c =>
-            
+          
             c.io.channelA.valid.poke(1.B)
             c.io.channelA.bits.a_param.poke(0.U)
             c.io.channelA.bits.a_size.poke(2.U)
