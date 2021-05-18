@@ -10,6 +10,8 @@ class stallUnit extends Module {
         val valid_out = Output(UInt(1.W))
     })
 
+    
+
     val bundle_reg = RegInit(0.U.asTypeOf(new channelDBundle))
     val valid_reg = RegInit(0.U(1.W))
     
