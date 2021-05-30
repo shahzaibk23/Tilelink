@@ -17,7 +17,7 @@ class Top extends Module with OpCodes with Config {
 
     io.channelA.ready := 1.B
 
-    val mem = Mem(1024, UInt(32.W))
+    val mem = SyncReadMem(1024, UInt(32.W))
     // mem.write(2.U, 4.U)
 
 
