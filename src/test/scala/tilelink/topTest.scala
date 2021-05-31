@@ -16,7 +16,7 @@ class topTest extends FreeSpec with ChiselScalatestTester {
             c.io.channelA.bits.a_param.poke(0.U)
             c.io.channelA.bits.a_size.poke(2.U)
             c.io.channelA.bits.a_source.poke(2.U)
-            c.io.channelA.bits.a_mask.poke(1.U)
+            c.io.channelA.bits.a_mask.poke("b1111".U)
             c.io.channelA.bits.a_corrupt.poke(0.U)
 
             // PUT 4 on address 4
